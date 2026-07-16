@@ -64,7 +64,7 @@ TaskManagerApp
 
 ---
 
-## ⚙️ Environment Variables
+## ⚙️ Environment Variables(Local)
 
 ### Backend (.env)
 
@@ -77,6 +77,19 @@ DATABASE_URL="postgresql://postgres:postgres@localhost:5432/task_manager"
 ```env
 VITE_API_URL=http://localhost:5000
 ```
+
+## ⚙️ Environment Variables(Docker)
+
+### Backend (.env)
+
+```env
+DATABASE_URL: postgresql://postgres:postgres@postgres:5432/task_manager
+```
+
+### Frontend (.env)
+
+```env
+VITE_API_URL=http://localhost:5000
 
 ---
 

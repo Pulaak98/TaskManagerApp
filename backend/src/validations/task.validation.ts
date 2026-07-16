@@ -14,3 +14,7 @@ export const updateStatusSchema = z.object({
 });
 
 export const updateTaskSchema = createTaskSchema;
+
+export const taskIdSchema = z.object({
+  id: z.coerce.number().int().positive(),
+});

@@ -1,7 +1,23 @@
 import prisma from "../config/prisma.js";
 
-export const findAllTasks = async () => {
-  return await prisma.task.findMany({
+export const findAllTasks = async (
+  search?: string,
+  completed?: boolean
+) => {
+  return prisma.task.findMany({
+    where: {
+      ...(search && {
+        title: {
+          contains: search,
+          mode: "insensitive",
+        },
+      }),
+
+      ...(completed !== undefined && {
+        completed,
+      }),
+    },
+
     orderBy: {
       createdAt: "desc",
     },

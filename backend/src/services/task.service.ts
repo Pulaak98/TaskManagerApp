@@ -4,8 +4,11 @@ import { updateTask } from "../repositories/task.repository.js";
 import { deleteTask } from "../repositories/task.repository.js";
 import { updateTaskStatus } from "../repositories/task.repository.js";
 
-export const getAllTasksService = async () => {
-  return await findAllTasks();
+export const getAllTasksService = async (
+  search?: string,
+  completed?: boolean
+) => {
+  return findAllTasks(search, completed);
 };
 
 export const createTaskService = async (

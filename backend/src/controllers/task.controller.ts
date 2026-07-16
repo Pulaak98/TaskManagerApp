@@ -7,17 +7,29 @@ import { updateTaskSchema } from "../validations/task.validation.js";
 import { deleteTaskService } from "../services/task.service.js";
 import { updateTaskStatusService } from "../services/task.service.js";
 import { updateStatusSchema } from "../validations/task.validation.js";
+import { taskIdSchema } from "../validations/task.validation.js";
+import asyncHandler from "../utils/asyncHandler.js";
 
-export const getAllTasks = async (req: Request, res: Response) => {
-  const tasks = await getAllTasksService();
+export const getAllTasks = asyncHandler( async (
+  req: Request,
+  res: Response
+) => {
+  const search = req.query.search as string | undefined;
+
+  const completed =
+    req.query.completed !== undefined
+      ? req.query.completed === "true"
+      : undefined;
+
+  const tasks = await getAllTasksService(search, completed);
 
   res.json({
     success: true,
     data: tasks,
   });
-};
+});
 
-export const createTask = async (
+export const createTask = asyncHandler( async (
   req: Request,
   res: Response
 ) => {
@@ -38,14 +50,14 @@ const { title, description } = result.data;
     success: true,
     data: task,
   });
-};
+});
 
 
-export const updateTask = async (
+export const updateTask = asyncHandler( async (
   req: Request,
   res: Response
 ) => {
-  const id = Number(req.params.id);
+  const { id } = taskIdSchema.parse(req.params);
 
   const result = updateTaskSchema.safeParse(req.body);
 
@@ -64,13 +76,13 @@ export const updateTask = async (
     success: true,
     data: task,
   });
-};
+});
 
-export const deleteTask = async (
+export const deleteTask = asyncHandler( async (
   req: Request,
   res: Response
 ) => {
-  const id = Number(req.params.id);
+  const { id } = taskIdSchema.parse(req.params);
 
   await deleteTaskService(id);
 
@@ -78,13 +90,13 @@ export const deleteTask = async (
     success: true,
     message: "Task deleted successfully",
   });
-};
+});
 
-export const updateTaskStatus = async (
+export const updateTaskStatus = asyncHandler( async (
   req: Request,
   res: Response
 ) => {
-  const id = Number(req.params.id);
+  const { id } = taskIdSchema.parse(req.params);
 
   const result = updateStatusSchema.safeParse(req.body);
 
@@ -103,4 +115,4 @@ export const updateTaskStatus = async (
     success: true,
     data: task,
   });
-};
+});
